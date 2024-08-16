@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    
+}
+.m1{
+    background-image: url(ace.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+
+}
+
+h1, h2 {
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.menu {
+    background-color: #333;
+    padding: 20px;
+    height: 100vh;
+}
+
+.menu h2 {
+    color: #fff;
+}
+
+.menu ul {
+    padding-left: 20px;
+}
+
+.menu a {
+    color: #fff;
+}
+
+.content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    
+}
+/* Add this at the end of your existing CSS */
+
+.scroll-container {
+    overflow: hidden;
+    background-color: #f0f0f0;
+    padding: 10px 0;
+    margin: 20px 0;
+}
+
+.scroll-text {
+    white-space: nowrap;
+    animation: scroll 30s linear infinite;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}

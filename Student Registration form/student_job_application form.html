@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Job Application Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #submitBtn {
+            background-color: #4CAF50;
+        }
+        #resetBtn {
+            background-color: #f44336;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Job Application Registration</h1>
+    <form id="registrationForm" onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <span id="nameError" class="error"></span>
+
+        <label for="collegeName">College Name:</label>
+        <input type="text" id="collegeName" name="collegeName" required>
+        <span id="collegeNameError" class="error"></span>
+
+        <label for="university">University:</label>
+        <input type="text" id="university" name="university" required>
+        <span id="universityError" class="error"></span>
+
+        <label for="courseCompleted">Course Completed:</label>
+        <input type="text" id="courseCompleted" name="courseCompleted" required>
+        <span id="courseCompletedError" class="error"></span>
+
+        <label for="percentage">Percentage:</label>
+        <input type="number" id="percentage" name="percentage" min="0" max="100" step="0.01" required>
+        <span id="percentageError" class="error"></span>
+
+        <label for="preferredPosition">Preferred Position:</label>
+        <input type="text" id="preferredPosition" name="preferredPosition" required>
+        <span id="preferredPositionError" class="error"></span>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+        <span id="dobError" class="error"></span>
+
+        <label for="email">Email ID:</label>
+        <input type="email" id="email" name="email" required>
+        <span id="emailError" class="error"></span>
+
+        <label for="mobile">Mobile Number:</label>
+        <input type="tel" id="mobile" name="mobile" required>
+        <span id="mobileError" class="error"></span>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+        <span id="genderError" class="error"></span>
+
+        <label for="preferredCity">Preferred City for Job:</label>
+        <input type="text" id="preferredCity" name="preferredCity" required>
+        <span id="preferredCityError" class="error"></span>
+
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" rows="3" required></textarea>
+        <span id="addressError" class="error"></span>
+
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state" required>
+        <span id="stateError" class="error"></span>
+
+        <label for="pincode">Pincode:</label>
+        <input type="text" id="pincode" name="pincode" required>
+        <span id="pincodeError" class="error"></span>
+
+        <div style="display: flex; justify-content: space-between;">
+            <button type="submit" id="submitBtn">Submit Application</button>
+            <button type="button" id="resetBtn" onclick="resetForm()">Reset Form</button>
+        </div>
+    </form>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+            const nameRegex = /^[a-zA-Z\s]{2,50}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const mobileRegex = /^\d{10}$/;
+            const pincodeRegex = /^\d{6}$/;
+
+            // Validate Name
+            const name = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+            if (!nameRegex.test(name.value)) {
+                nameError.textContent = "Please enter a valid name (2-50 characters, letters only)";
+                isValid = false;
+            } else {
+                nameError.textContent = "";
+            }
+
+            // Validate College Name
+            const collegeName = document.getElementById('collegeName');
+            const collegeNameError = document.getElementById('collegeNameError');
+            if (collegeName.value.trim().length < 2) {
+                collegeNameError.textContent = "Please enter a valid college name";
+                isValid = false;
+            } else {
+                collegeNameError.textContent = "";
+            }
+
+            // Validate University
+            const university = document.getElementById('university');
+            const universityError = document.getElementById('universityError');
+            if (university.value.trim().length < 2) {
+                universityError.textContent = "Please enter a valid university name";
+                isValid = false;
+            } else {
+                universityError.textContent = "";
+            }
+
+            // Validate Course Completed
+            const courseCompleted = document.getElementById('courseCompleted');
+            const courseCompletedError = document.getElementById('courseCompletedError');
+            if (courseCompleted.value.trim().length < 2) {
+                courseCompletedError.textContent = "Please enter a valid course name";
+                isValid = false;
+            } else {
+                courseCompletedError.textContent = "";
+            }
+
+            // Validate Percentage
+            const percentage = document.getElementById('percentage');
+            const percentageError = document.getElementById('percentageError');
+            if (isNaN(percentage.value) || percentage.value < 0 || percentage.value > 100) {
+                percentageError.textContent = "Please enter a valid percentage (0-100)";
+                isValid = false;
+            } else {
+                percentageError.textContent = "";
+            }
+
+            // Validate Preferred Position
+            const preferredPosition = document.getElementById('preferredPosition');
+            const preferredPositionError = document.getElementById('preferredPositionError');
+            if (preferredPosition.value.trim().length < 2) {
+                preferredPositionError.textContent = "Please enter a valid position";
+                isValid = false;
+            } else {
+                preferredPositionError.textContent = "";
+            }
+
+            // Validate Date of Birth
+            const dob = document.getElementById('dob');
+            const dobError = document.getElementById('dobError');
+            const today = new Date();
+            const birthDate = new Date(dob.value);
+            const age = today.getFullYear() - birthDate.getFullYear();
+            if (age < 18 || age > 30) {
+                dobError.textContent = "You must be between 18 and 30 years old";
+                isValid = false;
+            } else {
+                dobError.textContent = "";
+            }
+
+            // Validate Email
+            const email = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            if (!emailRegex.test(email.value)) {
+                emailError.textContent = "Please enter a valid email address";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+
+            // Validate Mobile Number
+            const mobile = document.getElementById('mobile');
+            const mobileError = document.getElementById('mobileError');
+            if (!mobileRegex.test(mobile.value)) {
+                mobileError.textContent = "Please enter a valid 10-digit mobile number";
+                isValid = false;
+            } else {
+                mobileError.textContent = "";
+            }
+
+            // Validate Gender
+            const gender = document.getElementById('gender');
+            const genderError = document.getElementById('genderError');
+            if (gender.value === "") {
+                genderError.textContent = "Please select a gender";
+                isValid = false;
+            } else {
+                genderError.textContent = "";
+            }
+
+            // Validate Preferred City
+            const preferredCity = document.getElementById('preferredCity');
+            const preferredCityError = document.getElementById('preferredCityError');
+            if (preferredCity.value.trim().length < 2) {
+                preferredCityError.textContent = "Please enter a valid city name";
+                isValid = false;
+            } else {
+                preferredCityError.textContent = "";
+            }
+
+            // Validate Address
+            const address = document.getElementById('address');
+            const addressError = document.getElementById('addressError');
+            if (address.value.trim().length < 5) {
+                addressError.textContent = "Please enter a valid address";
+                isValid = false;
+            } else {
+                addressError.textContent = "";
+            }
+
+            // Validate State
+            const state = document.getElementById('state');
+            const stateError = document.getElementById('stateError');
+            if (state.value.trim().length < 2) {
+                stateError.textContent = "Please enter a valid state name";
+                isValid = false;
+            } else {
+                stateError.textContent = "";
+            }
+
+            // Validate Pincode
+            const pincode = document.getElementById('pincode');
+            const pincodeError = document.getElementById('pincodeError');
+            if (!pincodeRegex.test(pincode.value)) {
+                pincodeError.textContent = "Please enter a valid 6-digit pincode";
+                isValid = false;
+            } else {
+                pincodeError.textContent = "";
+            }
+
+            return isValid;
+        }
+
+        function resetForm() {
+            document.getElementById("registrationForm").reset();
+            // Clear all error messages
+            const errorElements = document.getElementsByClassName("error");
+            for (let element of errorElements) {
+                element.textContent = "";
+            }
+        }
+    </script>
+</body>
+</html>

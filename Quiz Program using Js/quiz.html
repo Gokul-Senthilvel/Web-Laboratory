@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Quiz with Options</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #quiz-container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        #options-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+        .option {
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        .option.selected {
+            background-color: #e0e0e0;
+        }
+        #submit-btn, #next-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+        }
+        #result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Adaptive Quiz</h1>
+        <div id="question"></div>
+        <div id="options-container"></div>
+        <button id="submit-btn">Submit</button>
+        <button id="next-btn" style="display: none;">Next Question</button>
+        <div id="result"></div>
+        <div id="score"></div>
+    </div>
+
+    <script>
+        // Define the quiz questions, their difficulty levels, and options
+        const questions = [
+            {
+                text: "What is 2 + 2?",
+                options: ["3", "4", "5", "6"],
+                answer: "4",
+                difficulty: 1
+            },
+            {
+                text: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris", "Madrid"],
+                answer: "Paris",
+                difficulty: 2
+            },
+            {
+                text: "What is the square root of 144?",
+                options: ["10", "11", "12", "14"],
+                answer: "12",
+                difficulty: 3
+            },
+            {
+                text: "Who wrote 'To Kill a Mockingbird'?",
+                options: ["Ernest Hemingway", "Harper Lee", "F. Scott Fitzgerald", "John Steinbeck"],
+                answer: "Harper Lee",
+                difficulty: 4
+            },
+            {
+                text: "What is the chemical symbol for gold?",
+                options: ["Ag", "Au", "Fe", "Cu"],
+                answer: "Au",
+                difficulty: 3
+            },
+            {
+                text: "What is the largest planet in our solar system?",
+                options: ["Mars", "Jupiter", "Saturn", "Neptune"],
+                answer: "Jupiter",
+                difficulty: 2
+            },
+            {
+                text: "What year did World War II end?",
+                options: ["1943", "1944", "1945", "1946"],
+                answer: "1945",
+                difficulty: 3
+            },
+            {
+                text: "Who painted the Mona Lisa?",
+                options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+                answer: "Leonardo da Vinci",
+                difficulty: 2
+            },
+            {
+                text: "What is the boiling point of water in Celsius?",
+                options: ["90", "95", "100", "105"],
+                answer: "100",
+                difficulty: 2
+            },
+            {
+                text: "What is the capital of Japan?",
+                options: ["Seoul", "Beijing", "Tokyo", "Bangkok"],
+                answer: "Tokyo",
+                difficulty: 1
+            },
+        ];
+
+        let currentQuestionIndex = 0;
+        let currentDifficulty = 2; // Start with medium difficulty
+        let score = 0;
+        let currentQuestion;
+        let selectedOption = null;
+
+        const questionElement = document.getElementById('question');
+        const optionsContainer = document.getElementById('options-container');
+        const submitButton = document.getElementById('submit-btn');
+        const nextButton = document.getElementById('next-btn');
+        const resultElement = document.getElementById('result');
+        const scoreElement = document.getElementById('score');
+
+        function askQuestion() {
+            // Filter questions based on current difficulty
+            const availableQuestions = questions.filter(q => q.difficulty === currentDifficulty);
+            
+            if (availableQuestions.length === 0) {
+                endQuiz();
+                return;
+            }
+            
+            // Select a random question from available questions
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            currentQuestion = availableQuestions[randomIndex];
+            
+            // Remove the question from the array to avoid repetition
+            questions.splice(questions.indexOf(currentQuestion), 1);
+            
+            questionElement.textContent = currentQuestion.text;
+            optionsContainer.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            resultElement.textContent = '';
+            submitButton.style.display = 'inline';
+            nextButton.style.display = 'none';
+            selectedOption = null;
+        }
+
+        function selectOption(index) {
+            const options = optionsContainer.children;
+            for (let i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            options[index].classList.add('selected');
+            selectedOption = index;
+        }
+
+        function checkAnswer() {
+            if (selectedOption === null) {
+                alert("Please select an option before submitting.");
+                return;
+            }
+
+            const userAnswer = currentQuestion.options[selectedOption];
+            const correctAnswer = currentQuestion.answer;
+            
+            if (userAnswer === correctAnswer) {
+                resultElement.textContent = "Correct!";
+                score++;
+                currentDifficulty = Math.min(currentDifficulty + 1, 5); // Increase difficulty, max 5
+            } else {
+                resultElement.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                currentDifficulty = Math.max(currentDifficulty - 1, 1); // Decrease difficulty, min 1
+            }
+            
+            submitButton.style.display = 'none';
+            nextButton.style.display = 'inline';
+            updateScore();
+        }
+
+        function updateScore() {
+            scoreElement.textContent = `Score: ${score} out of ${currentQuestionIndex + 1}`;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < 10) { // Limit to 10 questions
+                askQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+            questionElement.textContent = "Quiz finished!";
+            optionsContainer.innerHTML = '';
+            submitButton.style.display = 'none';
+            nextButton.style.display = 'none';
+            resultElement.textContent = `Your final score is ${score} out of 10.`;
+        }
+
+        submitButton.addEventListener('click', checkAnswer);
+        nextButton.addEventListener('click', nextQuestion);
+
+        // Start the quiz
+        askQuestion();
+    </script>
+</body>
+</html>
